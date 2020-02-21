@@ -1,26 +1,34 @@
 #!/bin/bash
 
-location=~/SisOp/Praktikum1
 
-#location=~/SoalShiftSISOP20_modul1_F03/kenangan
-#location=~/SoalShiftSISOP20_modul1_F03/kenangan
-lastnum=`ls | grep -c "kenangan_"`
-addnum=`expr $lastnum + 1`
-mkdir $location/kenangan_$addnum
-mkdir $location/duplicate_$addnum
-echo "" > location.log
+kenloc=kenangan
+duploc=duplicate
 
+
+[ ! -d "$kenloc" ] && mkdir -p "$kenloc"
+[ ! -d "$duploc" ] && mkdir -p "$duploc"
+echo "" >> location.log
 
 for (( i = 1; i < 29; i++ )); do
-  wget "https://loremflickr.com/320/240/cat" -o wget.log
-  loc=`grep "Location: " wget.log | cut -d "/" -f4 | cut -d " " -f1`
   name=pdkt_kusuma_$i
-  mv cat $name
+  wget -O $name "https://loremflickr.com/320/240/cat" -o temp.log
+  loc=`grep "Location: " temp.log | cut -d "/" -f4 | cut -d " " -f1`
+  lastkennum=`ls $kenloc/ | grep -c "kenangan_"`
+  lastdupnum=`ls $duploc/ | grep -c "duplicate_"`
+  cat temp.log >> wget.log
+  rm temp.log
   if [[ $(grep -c $loc location.log) > 0 ]]; then
-    mv $name $location/duplicate_$addnum
+    num=`expr $lastdupnum + 1`
+    name2=duplicate_$num
+    mv $name $name2
+    mv $name2 $duploc/
   else
-    mv $name $location/kenangan_$addnum
+    num=`expr $lastkennum + 1`
+    name2=kenangan_$num
+    mv $name $name2
+    mv $name2 $kenloc/
     echo $loc >> location.log
   fi
 done
-rm location.log
+mv wget.log wget.log.bak
+mv location.log location.log.bak
