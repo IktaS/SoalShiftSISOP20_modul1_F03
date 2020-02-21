@@ -1,7 +1,7 @@
 # SoalShiftSISOP20_modul1_B09
 Soal shift Sistem Operasi 2020\
 Modul 1\
-Kelompok B09
+Kelompok F03
 
 ## #1 &ndash; Pengolahan data Sample-Superstore.csv
 > Source code: [soal1.sh]()
