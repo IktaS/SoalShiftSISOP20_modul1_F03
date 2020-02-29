@@ -8,6 +8,9 @@ Kelompok F03
 
 ---
  Soal 1 : baca file Sample-Superstore.tsv\
+ \
+ Screenshoot hasil(1ABC):
+ ![soal1](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal1/soal1.png)
  1.A   
   Pada 1A, diminta menentukan region dengan profit terendah.
  ```bash
@@ -56,6 +59,7 @@ Kelompok F03
       print min;
    ```
    digunakan untuk mencari nilai terkecil dari semua elemen array ```sum```. Semua ini dimasukkan kedalam suatu variabel ```lowestreg``` untuk digunakan pada soal 1.b. Itulah mengapa pada bagian awal terdapat ```  lowestreg=$(.....) ```\
+   
    \
 1.B  
   Diminta untuk mencari dua state dengan profit terendah berdasarkan hasil dari 1.A
@@ -188,7 +192,9 @@ Kelompok F03
 > Source code: [soal2.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal2/soal2.sh), [soal2_enkripsi.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal2/soal2_enkripsi.sh), [soal2_dekripsi.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal2/soal2_dekripsi.sh)
 
 ---
-
+\
+Screenshoot hasil(2A):
+![soal2](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal2/soal2.1.png)
   2.A \
   Diminta membuat script yang bisa mengenerate alphanumeric random sepanjang 28 karakter dan disimpan ke text file dengan nama hanya alphabet sesuai inputan, dan dipastikan string alphanumeric tersebut memiliki lowercase, uppercase, dan digit.
   ```bash
@@ -376,12 +382,15 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
   ```bash
   charascval=`expr $charascval + 26`
   ```
-  
+  Screenshoot hasil(2BC):
+  ![soal21](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal2/soal2.23.png)
 ## #3 &ndash; Cat
 > Source code: [soal3.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal3/soal3.sh), [soal3_cron.txt](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal3/soal3_cron.txt), [soal3_sortdupe.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal3/soal3_sortdupe.sh)
 
 ---
-
+\
+Screenshoot hasil(3AC):
+![soal3](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal3/soal3.png)
 3.A  
   Diminta membuat script yang akan mendownload gambar dari suatu website sebanyak 28 kali dan memberi nama gambar tersebut "pdkt_kusuma_NO" dan menyimpan log filenya dalam bentuk wget.log.      
     
