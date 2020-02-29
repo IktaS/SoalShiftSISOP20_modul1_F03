@@ -35,5 +35,5 @@ function randstring(){
 if [[ $1 =~ [0-9] ]]; then
   echo bad argument;
 else
-  echo `randstring 3 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
+  echo `randstring 28 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
 fi
