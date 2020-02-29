@@ -2,8 +2,8 @@
 
 namestring=""
 function csr_cipher() {
+  addnumber=$(stat -c %y $1 | cut -d ' ' -f2 | cut -d ':' -f1)
   tempstring=`echo $1 | cut -d "." -f1`
-  addnumber=$2
   for (( i=0; i<${#tempstring}; i++ )); do
     charascval=`echo "${tempstring:$i:1}"`
     charascval=`printf "%d" "'$charascval"`
@@ -17,5 +17,6 @@ function csr_cipher() {
     namestring=$namestring`echo -e "\\0$charascval"`
   done
 }
-csr_cipher $1 $2
+
+csr_cipher $1
 mv $1 $namestring.txt
