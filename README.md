@@ -7,9 +7,9 @@ Kelompok F03
 > Source code: [soal1.sh](https://github.com/IktaS/SoalShiftSISOP20_modul1_F03/blob/master/soal1/soal1.sh)
 
 ---
- Soal 2 : baca file Sample-Superstore.tsv
+ Soal 1 : baca file Sample-Superstore.tsv\
  1.A   
-  Diminta menentukan region dengan profit terendah\
+  Pada 1A, diminta menentukan region dengan profit terendah.
  ```bash
  lowestreg=$(awk -F'\t' '
     {
@@ -29,12 +29,22 @@ Kelompok F03
     }
     ' Sample-Superstore.tsv)
   ```
-  awalnya hitung i, agar bisa menskip baris pertama dengan\
-  ```bash
-  if(i!=1)
+  Pada bagian awal
   ```
-  lalu gunakan array untuk menyimpan total nilai profit( kolom 21 ), dan gunakan region ( kolom 13 ) untuk indexnya
-  lalu pada\
+  lowestreg=$(awk -F'\t' '
+  ```
+  ```-F'\t'``` digunakan agar awk menganali bahwa tiap argumen dipisahkan oleh tab(atau \t)\
+  \
+  i dihitung agar baris pertama bisa dilewati:
+  ```bash
+  i++;
+  if(i!=1){
+  ```
+  Gunakan array ```sum``` untuk menyimpan total nilai profit( kolom 21 ) dengan menggunakan region ( kolom 13 ) sebagai indexnya
+  ```
+  sum[$13] += $21;
+  ```
+  lalu 
   ```bash
   curmin=999999.00;
       for(it in sum){
@@ -45,7 +55,8 @@ Kelompok F03
       }
       print min;
    ```
-   digunakan untuk mencari nilai terkecil dari semua elemen array "sum", semua ini dimasukkan kedalam suatu variabel lowestreg untuk digunakan pada soal 1.b\
+   digunakan untuk mencari nilai terkecil dari semua elemen array ```sum```. Semua ini dimasukkan kedalam suatu variabel ```lowestreg``` untuk digunakan pada soal 1.b. Itulah mengapa pada bagian awal terdapat ```  lowestreg=$(.....) ```\
+   \
 1.B  
   Diminta untuk mencari dua state dengan profit terendah berdasarkan hasil dari 1.A
   ```bash
@@ -81,12 +92,18 @@ Kelompok F03
     }' Sample-Superstore.tsv)
     echo $twolowstate;
    ```
-   Di sini variabel dari 1.A digunakan untuk mengerjakan, jadi di dalam awk perlu dipakai opsi
+   Disini variabel dari 1.A digunakan untuk mengerjakan, jadi di dalam awk perlu diberi
    ```bash
    awk -v lowestreg="$lowestreg
    ```
-   agar ada variabel lowestreg yang bisa digunakan selama awk berjalan. Lalu, dicari dua nilai terkecil itu
-    ```bash
+   agar ada variabel ```lowestreg``` yang bisa digunakan selama awk berjalan.\ 
+   Dua nilai terkecil itu dicari dengan cara yang mirip seperti pada soal 1A, yaitu dengan menggunakan array ```sum``` dengan indeks argumen 11 (state) yang digunakan untuk menghitung total keuntungan dengan mempertimbangkan apakah region(argumen 13) data tersebut sesuai dengan hasil 1A
+   ```
+   if($13 == lowestreg){
+        sum[$11] += $21;
+   ```
+   Array ```sum``` tersebut kemudian digunakan untuk mencari 2 state dengan keuntungan terkecil.
+   
         END{
         firststate="";
         secondstate="";
@@ -111,9 +128,10 @@ Kelompok F03
         }
       }' Sample-Superstore.tsv)
       echo $twolowstate;
-    ```
-     lalu simpan semua hasil dalam sebuah variabel hasil twolowstate untuk dipakai di 1.C
-  1.C
+  Simpan semua hasil dalam sebuah variabel hasil ```twolowstate``` untuk dipakai di 1.C\
+  ```echo $twolowstate``` digunakan untuk menampilkan 2 state dengan keuntungan terkecil sesuai hasil pencarian.\
+  \
+  1.C\
   Diminta mencari 10 nama produk dengan profit paling rendah dari hasil 1.B
    ```bash
       arrstate=($twolowstate)
@@ -170,7 +188,7 @@ Kelompok F03
 
 ---
 
-  2.A 
+  2.A \
   Diminta membuat script yang bisa mengenerate alphanumeric random sepanjang 28 karakter dan disimpan ke text file dengan nama hanya alphabet sesuai inputan, dan dipastikan string alphanumeric tersebut memiliki lowercase, uppercase, dan digit.
   ```bash
   #!/bin/bash
@@ -213,7 +231,7 @@ Kelompok F03
     echo `randstring 28 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
   fi
   ```
-  pertama, function lowerrand(), upperrand(), dan digitrand() akan membaca /dev/urandom untuk mengambil random string dengan
+  Pertama, function lowerrand(), upperrand(), dan digitrand() akan membaca /dev/urandom untuk mengambil random string dengan
   ```bash
   cat /dev/urandom
   ```
@@ -231,7 +249,7 @@ Kelompok F03
   ```bash
   fold -w1
   ```
-  function randstring() akan membuat sebuah string dengan lowercase, uppercase, dan digit secara berurutan.
+  Function randstring() akan membuat sebuah string dengan lowercase, uppercase, dan digit secara berurutan.
   ```bash
   function randstring(){
     for (( i = 0; i < $1; i++ )); do
@@ -259,8 +277,9 @@ Kelompok F03
     echo `randstring 28 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
   fi
   ```
-2.B 
-Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berdasarkan jam.  
+  \
+2.B \
+Diminta membuat script yang bisa mengenkripsi nama file dengan caesar cipher berdasarkan jam.  
   ```bash
   namestring=""
   function csr_cipher() {
@@ -282,7 +301,7 @@ Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berd
   csr_cipher $1
   mv $1 $namestring.txt
   ```
-  pertama ambil nama file saja dengan
+  Pertama ambil nama file saja dengan
   ```bash
   tempstring=`echo $1 | cut -d "." -f1`
   ```
@@ -290,7 +309,7 @@ Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berd
   ```bash
   addnumber=`date +%H`
   ```
-  baca character satu satu dengan
+  baca character satu per satu dengan
   ```bash
   for (( i=0; i<${#tempstring}; i++ )); do
    charascval=`echo "${tempstring:$i:1}"`
@@ -300,7 +319,7 @@ Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berd
   charascval=`printf "%d" "'$charascval"`
       charascval=`expr $charascval + $addnumber`
   ```
-  lalu cek apakah hasil tambah lebih dari range alphabet, jika iya, loop balik dengan
+  lalu cek apakah hasil tambah lebih dari range alphabet. Jika iya, loop balik dengan
   ```bash
   if [[ $charascval > 122 || $charascval > 90 ]]; then
         if [[ $charascval < 65 || $charascval < 97 ]]; then
@@ -317,7 +336,8 @@ Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berd
   ```bash
   mv $1 $namestring.txt
   ```
-2.C 
+  \
+2.C \
 Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher dengan mengambil waktu terakhir file di modifikasi  
   ```bash
   
@@ -390,13 +410,15 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
       wget -O pdkt_kusuma_$num -a wget.log "https://loremflickr.com/320/240/cat"
     done
  ```
+ \
 3.B  
   Diminta membuat cron job untuk menjalankan script tersebut setiap hari kecuali sabtu, setiap 8 jam mulai dari jam 06.05 pagi. 
   ```bash
  5 1 * * 1-5,7 (cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3; bash soal3.sh)
   ```
+  \
 3.C  
-  Diminta membuat script yang bisa mensortir gambar yang sudah didownload berdasarkan apakah ada duplikat atau tidak, dan menaruhnya di folder tertentu dan memberi nama tertentu, lalu menyimpan semua log file dalam bentuk .log.bak.      
+  Diminta membuat script yang bisa mensortir gambar yang sudah didownload berdasarkan apakah ada duplikat atau tidak, lalu menaruhnya di folder tertentu dan memberi nama tertentu, kemudian menyimpan semua log file dalam bentuk .log.bak.      
   ```bash
       kenloc=kenangan
       duploc=duplicate
@@ -429,7 +451,7 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
       mv wget.log wget.log.bak
       mv location.log location.log.bak
   ```
-  pertama inisialisasi lokasi, dan cek lokasi jika sudah ada atau belum, jika belum, buat direktori
+  Pertama inisialisasi lokasi, lalu cek pada lokasi apakah sudah ada direktori yang diinginkan atau belum. Jika belum, buat direktori
   ```bash
       kenloc=kenangan
       duploc=duplicate
@@ -437,17 +459,17 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
       [ ! -d "$kenloc" ] && mkdir -p "$kenloc"
       [ ! -d "$duploc" ] && mkdir -p "$duploc"
   ```
-  buat file location.log yang berisikan lokasi download dan nama file download, yang didapat dari memfilter wget.log
+  Buat file location.log yang berisikan lokasi download dan nama file download, yang didapat dari memfilter wget.log
   ```bash
   grep 'Location: \|Saving to: ' wget.log | awk '{i++;if(i%2!=0) printf "%s ", $2;else print $3}' | tr -d "‘’" > location.log
   ```
-  inisialisasi penomoran kenangan dan duplicate, lalu masukkan semua variabel di awk
+  Inisialisasi penomoran kenangan dan duplicate, lalu masukkan semua variabel di awk
   ```bash
       lastkennum=`ls $kenloc/ | grep -c "kenangan_"`
       lastdupnum=`ls $duploc/ | grep -c "duplicate_"`
       awk -v lastkennum="$lastkennum" -v lastdupnum="$lastdupnum" -v kenloc="$kenloc" -v duploc="$duploc" -F " "
   ```
-  gunakan array untuk mencatat apakah sudah pernah ada location yang masuk, jika tidak, taruh di folder kenangan, dengan nama kenangan_NO,jika ada, taruh di folder duplicate dengan nama duplicate_NO
+  Gunakan array untuk mencatat apakah sudah pernah ada location yang masuk. Jika tidak, taruh di folder kenangan dengan nama "kenangan_[NO]". Jika ada, taruh di folder duplicate dengan nama "duplicate_[NO]"
   ```bash
    map[$1]++;
         if(map[$1] > 1)
@@ -463,7 +485,7 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
         system(sh)
       }' location.log
   ```
-  ganti semua ekstensi .log ke .log.bak
+  Ganti semua ekstensi .log ke .log.bak
   ```bash
     mv wget.log wget.log.bak
     mv location.log location.log.bak
