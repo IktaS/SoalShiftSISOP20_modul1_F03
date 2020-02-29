@@ -171,29 +171,93 @@ Kelompok F03
 ---
 
   2.A 
-  Diminta membuat script yang bisa mengenerate alphanumeric random sepanjang 28 karakter dan disimpan ke text file dengan nama sesuai inputan
+  Diminta membuat script yang bisa mengenerate alphanumeric random sepanjang 28 karakter dan disimpan ke text file dengan nama hanya alphabet sesuai inputan, dan dipastikan string alphanumeric tersebut memiliki lowercase, uppercase, dan digit.
   ```bash
-  cat /dev/urandom | tr -cd 'a-zA-Z0-9' | fold -w 28 | head -n 1 > $1.txt
+  #!/bin/bash
+
+  #cat /dev/urandom | tr -cd 'a-zA-Z0-9' | fold -w 1 | head -n 1 > $1.txt
+
+  function lowerrand(){
+    cat /dev/urandom | tr -cd 'a-z' | fold -w 1 | head -n 1
+  }
+
+  function upperrand(){
+    cat /dev/urandom | tr -cd 'A-Z' | fold -w 1 | head -n 1
+  }
+
+  function digitrand(){
+    cat /dev/urandom | tr -cd '0-9' | fold -w 1 | head -n 1
+  }
+
+  function randstring(){
+    for (( i = 0; i < $1; i++ )); do
+      rand=`expr $i % 3`
+      case $rand in
+        [0])
+          tempstring=$tempstring`lowerrand`
+          ;;
+        [1])
+          tempstring=$tempstring`upperrand`
+          ;;
+        [2])
+          tempstring=$tempstring`digitrand`
+          ;;
+      esac
+    done
+    echo $tempstring;
+  }
+
+  if [[ $1 =~ [0-9] ]]; then
+    echo bad argument;
+  else
+    echo `randstring 28 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
+  fi
   ```
-  pertama mengakses string random dengan
+  pertama, function lowerrand(), upperrand(), dan digitrand() akan membaca /dev/urandom untuk mengambil random string dengan
   ```bash
   cat /dev/urandom
   ```
-  lalu difilter hanya alphanumeric dengan
+  lalu di filter untuk hanya memiliki lowercase, uppercase, atau digit untuk masing masing fungsi dengan tr.
   ```bash
-  tr -cd 'a-zA-Z0-9'
+  tr -cd 'a-z'
   ```
-  lalu dipotong hanya menjadi 28 karakter dengan
   ```bash
-  fold -w 28
+  tr -cd 'A-Z'
   ```
-  lalu dipotong hanya 1 baris
   ```bash
-  head -n 1 
+  tr -cd '0-9'
   ```
-  lalu di simpan hasil semua itu ke nama txt sesuai input dengan
+  lalu di fold agar panjangnya hanya 1, lalu dipotong hanya baris pertama saja yang diambil dengan head.
   ```bash
-  > $1.txt
+  fold -w1
+  ```
+  function randstring() akan membuat sebuah string dengan lowercase, uppercase, dan digit secara berurutan.
+  ```bash
+  function randstring(){
+    for (( i = 0; i < $1; i++ )); do
+      rand=`expr $i % 3`
+      case $rand in
+        [0])
+          tempstring=$tempstring`lowerrand`
+          ;;
+        [1])
+          tempstring=$tempstring`upperrand`
+          ;;
+        [2])
+          tempstring=$tempstring`digitrand`
+          ;;
+     esac
+    done
+    echo $tempstring;
+  }
+  ```
+  di akhir setelah pengecekan argumen nama file, panggil randstring, , jadikan 1 karakter per baris dengan fold, lalu di   shuffle agar urutannya menjadi random dengan shuf, lalu hapus '\n' agar menjadikannya 1 string. 
+  ```bash
+  if [[ $1 =~ [0-9] ]]; then
+    echo bad argument;
+  else
+    echo `randstring 28 | fold -w1 | shuf | tr -d '\n'` > $1.txt;
+  fi
   ```
 2.B 
 Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berdasarkan jam.  
@@ -254,29 +318,36 @@ Diminta membuat script yang bisa menenkripsi nama file dengan caesar cipher berd
   mv $1 $namestring.txt
   ```
 2.C 
-Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher dan input parameter jam enkripsi.  
+Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher dengan mengambil waktu terakhir file di modifikasi  
   ```bash
-  namestring=""
-  function csr_cipher() {
-    tempstring=`echo $1 | cut -d "." -f1`
-    addnumber=$2
-    for (( i=0; i<${#tempstring}; i++ )); do
-      charascval=`echo "${tempstring:$i:1}"`
-      charascval=`printf "%d" "'$charascval"`
-      charascval=`expr $charascval - $addnumber`
-      if [[ $charascval > 122 || $charascval > 90 ]]; then
-        if [[ $charascval < 65 || $charascval < 97 ]]; then
-          charascval=`expr $charascval + 26`
-        fi
-      fi
-      charascval=`echo "obase=8;$charascval"|bc`
-      namestring=$namestring`echo -e "\\0$charascval"`
-    done
-  }
-  csr_cipher $1 $2
-  mv $1 $namestring.txt
+  
+   #!/bin/bash
+   namestring=""
+   function csr_cipher() {
+     addnumber=$(stat -c %y $1 | cut -d ' ' -f2 | cut -d ':' -f1)
+     tempstring=`echo $1 | cut -d "." -f1`
+     for (( i=0; i<${#tempstring}; i++ )); do
+       charascval=`echo "${tempstring:$i:1}"`
+       charascval=`printf "%d" "'$charascval"`
+       charascval=`expr $charascval - $addnumber`
+       if [[ $charascval > 122 || $charascval > 90 ]]; then
+         if [[ $charascval < 65 || $charascval < 97 ]]; then
+           charascval=`expr $charascval + 26`
+         fi
+       fi
+       charascval=`echo "obase=8;$charascval"|bc`
+       namestring=$namestring`echo -e "\\0$charascval"`
+     done
+   }
+
+   csr_cipher $1
+   mv $1 $namestring.txt
   ```
-  disini yang dilakukan sama persis, kecuali bagian penambahan nilai ascii menjadi pengurangan
+  disini yang dilakukan sama persis dengan enkripsi, kecuali pengambilan addnumber dari waktu terakhir file dimodifikasi
+  ```bash
+  stat -c %y $1 | cut -d ' ' -f2 | cut -d ':' -f1
+  ```
+  bagian penambahan nilai ascii menjadi pengurangan 
   ```bash
   charascval=`expr $charascval - $addnumber`
   ```
@@ -322,7 +393,7 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher dan 
 3.B  
   Diminta membuat cron job untuk menjalankan script tersebut setiap hari kecuali sabtu, setiap 8 jam mulai dari jam 06.05 pagi. 
   ```bash
-    5 6,14,22 * * 1-5,7 bash /home/soal3.sh
+ 5 1 * * 1-5,7 (cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3; bash soal3.sh)
   ```
 3.C  
   Diminta membuat script yang bisa mensortir gambar yang sudah didownload berdasarkan apakah ada duplikat atau tidak, dan menaruhnya di folder tertentu dan memberi nama tertentu, lalu menyimpan semua log file dalam bentuk .log.bak.      
