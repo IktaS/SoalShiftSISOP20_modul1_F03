@@ -96,7 +96,8 @@ Kelompok F03
    ```bash
    awk -v lowestreg="$lowestreg
    ```
-   agar ada variabel ```lowestreg``` yang bisa digunakan selama awk berjalan.\ 
+   agar ada variabel ```lowestreg``` yang bisa digunakan selama awk berjalan.
+   \
    Dua nilai terkecil itu dicari dengan cara yang mirip seperti pada soal 1A, yaitu dengan menggunakan array ```sum``` dengan indeks argumen 11 (state) yang digunakan untuk menghitung total keuntungan dengan mempertimbangkan apakah region(argumen 13) data tersebut sesuai dengan hasil 1A
    ```
    if($13 == lowestreg){
@@ -414,8 +415,9 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
 3.B  
   Diminta membuat cron job untuk menjalankan script tersebut setiap hari kecuali sabtu, setiap 8 jam mulai dari jam 06.05 pagi. 
   ```bash
- 5 1 * * 1-5,7 (cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3; bash soal3.sh)
+ 5 6,14,22 * * 1-5,7 (cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3; bash soal3.sh)
   ```
+  Cron akan berjalan pada hari Senin-Jumat(1-5), dan Minggu(7) pada jam 06.05, 14.05, dan 22.05\
   \
 3.C  
   Diminta membuat script yang bisa mensortir gambar yang sudah didownload berdasarkan apakah ada duplikat atau tidak, lalu menaruhnya di folder tertentu dan memberi nama tertentu, kemudian menyimpan semua log file dalam bentuk .log.bak.      
@@ -451,7 +453,7 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
       mv wget.log wget.log.bak
       mv location.log location.log.bak
   ```
-  Pertama inisialisasi lokasi, lalu cek pada lokasi apakah sudah ada direktori yang diinginkan atau belum. Jika belum, buat direktori
+  Pertama inisialisasi lokasi, lalu cek pada lokasi apakah sudah ada yang diinginkan atau belum. Jika belum, buat direktori
   ```bash
       kenloc=kenangan
       duploc=duplicate
@@ -463,13 +465,13 @@ Diminta membuat script yang bisa mendekripsi nama file dengan caesar cipher deng
   ```bash
   grep 'Location: \|Saving to: ' wget.log | awk '{i++;if(i%2!=0) printf "%s ", $2;else print $3}' | tr -d "‘’" > location.log
   ```
-  Inisialisasi penomoran kenangan dan duplicate, lalu masukkan semua variabel di awk
+  Inisialisasi penomoran kenangan dan duplicate, lalu masukkan semua variabel ke awk
   ```bash
       lastkennum=`ls $kenloc/ | grep -c "kenangan_"`
       lastdupnum=`ls $duploc/ | grep -c "duplicate_"`
       awk -v lastkennum="$lastkennum" -v lastdupnum="$lastdupnum" -v kenloc="$kenloc" -v duploc="$duploc" -F " "
   ```
-  Gunakan array untuk mencatat apakah sudah pernah ada location yang masuk. Jika tidak, taruh di folder kenangan dengan nama "kenangan_[NO]". Jika ada, taruh di folder duplicate dengan nama "duplicate_[NO]"
+  Gunakan array untuk mencatat apakah sudah pernah ada location yang masuk. Jika belum, taruh di folder kenangan dengan nama "kenangan_[NO]". Jika ada, taruh di folder duplicate dengan nama "duplicate_[NO]"
   ```bash
    map[$1]++;
         if(map[$1] > 1)
