@@ -427,6 +427,7 @@ Screenshoot hasil(3AC):
  5 6,14,22 * * 1-5,7 (cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3; bash soal3.sh)
   ```
   Cron akan berjalan pada hari Senin-Jumat(1-5), dan Minggu(7) pada jam 06.05, 14.05, dan 22.05\
+  Bagian ``` cd /home/ikta/SoalShiftSISOP20_modul1_F03/soal3 ``` perlu disesuaikan tergantung direktori pengguna yang memuat soal3.sh
   \
 3.C  
   Diminta membuat script yang bisa mensortir gambar yang sudah didownload berdasarkan apakah ada duplikat atau tidak, lalu menaruhnya di folder tertentu dan memberi nama tertentu, kemudian menyimpan semua log file dalam bentuk .log.bak.      
