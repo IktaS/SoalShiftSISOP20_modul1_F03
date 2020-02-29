@@ -504,6 +504,6 @@ Screenshoot hasil(3AC):
   \
   Kendala yang dialami selama pengerjaan:
   - Masih belum terbiasa dengan syntax yang digunakan, sehingga masih perlu mencari jawaban di google
-  - Pada soal 1C (berkas tidak ada karena tidak diupload), kodingan tidak optimal sehingga setiap fungsi tersebut dijalankan komputer akan mengeluarkan suara, dan tidak dapat digunakan selama bebera waktu sebelum menampilkan hasil
+  - Pada soal 1C (berkas tidak ada karena tidak diupload/digunakan), kodingan tidak optimal sehingga setiap fungsi tersebut dijalankan komputer akan mengeluarkan suara, dan tidak dapat digunakan selama bebera waktu sebelum menampilkan hasil yang salah
   - Pada soal 2, soal2.sh pada awalnya tetap mau mengenerate file txt walau argumen mengandung angka (sudah diperbaiki pada revisi)
   - Pada soal 3, cron tidak berjalan sesuai keinginan (sudah diperbaiki pada revisi) 
